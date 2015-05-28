@@ -1,0 +1,1 @@
+lr-deploy/bin/lr-deploy.sh
