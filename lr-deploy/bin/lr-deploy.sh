@@ -34,24 +34,22 @@ require () {
 
     # Check to see if we know how to get the thing.
     # First, try a platform specific way.
-    pkg_command_name="install_$(uname)_$pkg"
-    eval "pkg_command=\$$pkg_command_name"
-    if [ -z "$pkg_command" ]; then
+    pkg_command="install_$(uname)_$pkg"
+    if ! type "$pkg_command" >/dev/null 2>&1; then
         # Otherwise we'll try a generic way.
-        pkg_command_name="install_$pkg"
-        eval "pkg_command=\$$pkg_command_name"
+        pkg_command="install_$pkg"
     fi
 
-    if [ -z "$pkg_command" ]; then
+    if ! type "$pkg_command" >/dev/null 2>&1; then
         warn "I don't know how to install '$pkg' on '$(uname)'. You're on your own."
         return 1
     fi
 
-    # We know how, so let's get the thing.
-    (eval "set -e; $pkg_command") || die "I couldn't get $pkg"
+    # We supposedly know how, so let's get the thing.
+    (set -e; $pkg_command) || die "I couldn't get $pkg"
 }
 
-install_Darwin_brew='
+install_Darwin_brew () {
     require curl
     require ruby
 
@@ -67,44 +65,44 @@ install_Darwin_brew='
     done
 
     brew prune
-'
+}
 
-install_Darwin_brew_cask='
+install_Darwin_brew_cask () {
     require brew
     brew install caskroom/cask/brew-cask
-'
+}
 
-install_Darwin_iterm2='
+install_Darwin_iterm2 () {
     require brew_cask
     brew cask install iterm2
-'
+}
 
-install_Darwin_pstree='
+install_Darwin_pstree () {
     require brew
     brew install pstree
-'
+}
 
-install_Darwin_s3cmd='
+install_Darwin_s3cmd () {
     require brew
     brew install s3cmd
-'
+}
 
-install_Darwin_stow='
+install_Darwin_stow () {
     require brew
     brew install stow
-'
+}
 
-install_Darwin_tree='
+install_Darwin_tree () {
     require brew
     brew install tree
-'
+}
 
 # These are meta packages
-install_Darwin_meta_platform_extras='
+install_Darwin_meta_platform_extras () {
     require iterm2
-'
+}
 
-install_meta_dotfiles='
+install_meta_dotfiles () {
     if [ ! -d "$HOME/dotfiles" ]; then
         if [ -e "$HOME/dotfiles" ]; then
             die "Woah nelly! I need $HOME/dotfiles to not be there right now. Failed to get your dotfiles"
@@ -115,26 +113,26 @@ install_meta_dotfiles='
         warn "I am going to try and get $USER/dotfiles from github!"
         cd "$HOME" && git clone "git://github.com/$USER/dotfiles"
     fi
-'
+}
 
-install_meta_vim='
+install_meta_vim () {
     require vim
     require meta_dotfiles
     require stow
 
     cd "$HOME/dotfiles"
     stow vim
-'
+}
 
 # Stuff I always want
-install_meta_default='
+install_meta_default () {
     require meta_platform_extras
     require meta_vim
     require pstree
     require s3cmd
     require screen
     require tree
-'
+}
 
 main () {
     if [ $# -eq 0 ]; then
