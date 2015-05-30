@@ -124,8 +124,17 @@ install_meta_vim () {
     stow vim
 }
 
+install_meta_deploy () {
+    require meta_dotfiles
+    require stow
+
+    cd "$HOME/dotfiles"
+    stow lr-deploy
+}
+
 # Stuff I always want
 install_meta_default () {
+    require meta_deploy
     require meta_platform_extras
     require meta_vim
     require pstree
