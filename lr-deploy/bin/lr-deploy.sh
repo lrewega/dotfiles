@@ -124,6 +124,14 @@ install_meta_github () {
     stow github
 }
 
+install_meta_screen () {
+    require screen
+    require meta_dotfiles
+    require stow
+    cd "$HOME/dotfiles"
+    stow screen
+}
+
 install_meta_vim () {
     require vim
     require meta_dotfiles
@@ -148,7 +156,7 @@ install_meta_default () {
     require meta_vim
     require pstree
     require s3cmd
-    require screen
+    require meta_screen
     require tree
 }
 
