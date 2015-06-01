@@ -101,6 +101,11 @@ install_Darwin_tree () {
 install_Darwin_meta_platform_extras () {
     require iterm2
     require meta_github
+
+    require stow
+    require meta_dotfiles
+    cd "$HOME/dotfiles"
+    stow extras-osx
 }
 
 install_meta_dotfiles () {
