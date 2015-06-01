@@ -100,6 +100,7 @@ install_Darwin_tree () {
 # These are meta packages
 install_Darwin_meta_platform_extras () {
     require iterm2
+    require meta_github
 }
 
 install_meta_dotfiles () {
@@ -113,6 +114,14 @@ install_meta_dotfiles () {
         warn "I am going to try and get $USER/dotfiles from github!"
         cd "$HOME" && git clone "git://github.com/$USER/dotfiles"
     fi
+}
+
+install_meta_github () {
+    require meta_dotfiles
+    require stow
+    require curl
+    cd "$HOME/dotfiles"
+    stow github
 }
 
 install_meta_vim () {
