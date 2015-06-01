@@ -108,6 +108,13 @@ install_Darwin_meta_platform_extras () {
     stow extras-osx
 }
 
+install_meta_bash () {
+    require meta_dotfiles
+    require stow
+    cd "$HOME/dotfiles"
+    stow bash
+}
+
 install_meta_dotfiles () {
     if [ ! -d "$HOME/dotfiles" ]; then
         if [ -e "$HOME/dotfiles" ]; then
@@ -156,6 +163,7 @@ install_meta_deploy () {
 
 # Stuff I always want
 install_meta_default () {
+    require meta_bash
     require meta_deploy
     require meta_platform_extras
     require meta_vim
